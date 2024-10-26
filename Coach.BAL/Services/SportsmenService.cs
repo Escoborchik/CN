@@ -26,7 +26,7 @@ namespace Coach.BAL.Services
                password, fullName,
                isMale, birthday,
                category, beginnning,
-               address, contacts
+               address, contacts,null, null
             );
 
             if (string.IsNullOrEmpty(sportsmen.Error))

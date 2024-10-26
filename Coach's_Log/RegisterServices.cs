@@ -55,13 +55,18 @@ namespace Coach_s_Log
                      };
                  });
 
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("Admin", policy =>
-            //    {
-            //        policy.RequireClaim("Admin", "true");
-            //    });
-            //});
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireClaim("Admin", "true");
+                });
+
+                options.AddPolicy("Coach", policy =>
+                {
+                    policy.RequireClaim("Coach", "true");
+                });
+            });
         }
     }
 }

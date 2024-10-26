@@ -15,9 +15,9 @@
         public int Summary { get; }
         public int Overpayment { get; }
         public int Debt { get; }
-        public List<string> Images { get; } = new();
+        public List<string> Images { get; } = [];
 
-        public static (PayInformation Lesson, string Error) Create(Guid id, int summary, int overpayment, int debt, List<string> images)
+        public static (PayInformation PayInformation, string Error) Create(Guid id, int summary, int overpayment, int debt, List<string> images)
         {
             var error = string.Empty;
 

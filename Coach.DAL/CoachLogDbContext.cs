@@ -7,7 +7,8 @@ namespace Coach.DAL
     public class CoachLogDbContext : DbContext
     {
         public CoachLogDbContext(DbContextOptions<CoachLogDbContext> options) : base(options)
-        {           
+        {
+            //Database.EnsureDeleted(); 
             Database.EnsureCreated();
         }
 

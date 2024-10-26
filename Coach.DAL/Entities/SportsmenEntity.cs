@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Coach.DAL.Entities
+﻿namespace Coach.DAL.Entities
 {
     public class SportsmenEntity
     {
@@ -14,7 +12,8 @@ namespace Coach.DAL.Entities
         public DateTime Beginnning { get; set; }
         public string Address { get; set; } = string.Empty;
         public string Contacts { get; set; } = string.Empty;
-        //public Dictionary<bool, DateOnly> Attendance { get; set; } = [];
+        public PayInformationEntity PayInformation { get; set; }
+        public List<AttendanceEntity> Attendance { get; set; } = [];
 
         //[ForeignKey(nameof(Gruop))]
         //public Guid GruopId { get; set; }

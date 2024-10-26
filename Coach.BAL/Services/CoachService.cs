@@ -18,12 +18,12 @@ namespace Coach.BAL.Services
             _jwtprovider = jWTProvider;
         }
 
-        public async Task<List<CoachModel>> GetAllUsers()
+        public async Task<List<CoachModel>> GetAllCoaches()
         {
             return await _coachRepository.Get();
         }
 
-        public async Task<Guid> CreateUser(string fullName, string email, string password)
+        public async Task<Guid> CreateCoach(string fullName, string email, string password)
         {
             var hashPassword = _passwordHasher.Generate(password);
 
@@ -61,12 +61,12 @@ namespace Coach.BAL.Services
             return token;
         }
 
-        public async Task<Guid> UpdateUser(Guid id, string userName, string email)
+        public async Task<Guid> UpdateCoach(Guid id, string userName, string email)
         {
             return await _coachRepository.Update(id, userName, email);
         }
 
-        public async Task<Guid> DeleteUser(Guid id)
+        public async Task<Guid> DeleteCoach(Guid id)
         {
             return await _coachRepository.Delete(id);
         }

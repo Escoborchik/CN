@@ -1,4 +1,7 @@
-﻿namespace Coach_s_Log.DTO.SportsmenDTO
+﻿using Coach.Core.Models;
+using Coach_s_Log.DTO.PayInformationDTO;
+
+namespace Coach_s_Log.DTO.SportsmenDTO
 {
     public record class SportsmenResponse(
         string FullName,
@@ -7,6 +10,7 @@
         int Category,
         DateTime Beginnning,
         string Address,
-        string Contacts
-        /*Dictionary<bool, DateOnly> Attendance*/);
+        string Contacts,
+        PayInformationResponse payInformation,
+        List<Attendance> Attendance);
 }

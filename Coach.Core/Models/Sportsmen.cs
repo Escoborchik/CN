@@ -4,7 +4,7 @@
     {
         public Sportsmen(Guid id, string userName, string passwordHash, string fullName,
             bool isMale, DateTime birthday, int category, DateTime beginnning,
-            string address, string contacts/* Dictionary<bool, DateOnly> attendance*//*, Gruop? gruop, PayInformation? payInformation*/)
+            string address, string contacts,PayInformation payInformation, List<Attendance> attendance/*  Gruop? gruop,  */)
         {
             Id = id;
             UserName = userName;
@@ -16,9 +16,10 @@
             Beginnning = beginnning;
             Address = address;
             Contacts = contacts;
-            //Attendance = attendance;
+            Attendance = attendance;
+            PayInformation = payInformation;
             //Gruop = gruop;
-            //PayInformation = payInformation;
+
         }
 
         public Guid Id { get; }
@@ -31,17 +32,18 @@
         public DateTime Beginnning { get; }
         public string Address { get; } = string.Empty;
         public string Contacts { get; } = string.Empty;
-        //public Dictionary<bool, DateOnly> Attendance { get; } = [];
-        //public Gruop? Gruop { get; }
-        //public PayInformation? PayInformation { get; }
+        public PayInformation PayInformation { get; }
+        public List<Attendance> Attendance { get; } = [];
+        //public Gruop? Gruop { get; }         
 
         public static (Sportsmen Sportsmen, string Error) Create(Guid id, string userName, string passwordHash, string fullName,
             bool isMale, DateTime birthday, int category, DateTime beginnning,
-            string address, string contacts/*, Dictionary<bool, DateOnly> attendance*//*, Gruop? gruop, PayInformation? payInformation*/)
+            string address, string contacts, PayInformation payInformation, List<Attendance> attendance/*,   Gruop? gruop, */)
         {
             var error = string.Empty;
 
-            var sportsmen = new Sportsmen(id, userName,passwordHash,fullName,isMale,birthday,category,beginnning,address,contacts/*attendance*/);
+            var sportsmen = new Sportsmen(id, userName,passwordHash,fullName,isMale,birthday,
+                category,beginnning,address, contacts,payInformation,attendance);
 
             return (sportsmen, error);
 

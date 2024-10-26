@@ -1,4 +1,5 @@
 ﻿using Coach.Core.Interfaces;
+using Coach_s_Log.DTO.PayInformationDTO;
 using Coach_s_Log.DTO.SportsmenDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +23,11 @@ namespace Coach_s_Log.Controllers
         {
             var sportsmens = await _sportsmenService.GetAllUsers();
 
-            var response = sportsmens.Select(b => new SportsmenResponse(b.FullName,b.IsMale,b.Birthday,b.Category,
-                b.Beginnning,b.Address,b.Contacts));
+            var response = sportsmens.Select(sportsmen => new SportsmenResponse(sportsmen.FullName, sportsmen.IsMale, sportsmen.Birthday,
+                sportsmen.Category, sportsmen.Beginnning, sportsmen.Address, sportsmen.Contacts,
+                new PayInformationResponse(sportsmen.PayInformation.Summary, sportsmen.PayInformation.Overpayment,
+                sportsmen.PayInformation.Debt, sportsmen.PayInformation.Images),
+                sportsmen.Attendance));
 
             return Ok(response);
         }
@@ -34,7 +38,9 @@ namespace Coach_s_Log.Controllers
             var sportsmen = await _sportsmenService.Login(sportsmenRequest.UserName, sportsmenRequest.Password);            
 
             return Ok(new SportsmenResponse(sportsmen.FullName, sportsmen.IsMale, sportsmen.Birthday, sportsmen.Category,
-                sportsmen.Beginnning, sportsmen.Address, sportsmen.Contacts));
+                sportsmen.Beginnning, sportsmen.Address, sportsmen.Contacts,
+                new PayInformationResponse(sportsmen.PayInformation.Summary, sportsmen.PayInformation.Overpayment,
+                sportsmen.PayInformation.Debt, sportsmen.PayInformation.Images), sportsmen.Attendance));
         }
 
         [HttpPost("[action]")]
@@ -46,7 +52,7 @@ namespace Coach_s_Log.Controllers
             return Ok(userId);
         }
         [HttpPut("[action]")]
-        public async Task<ActionResult<Guid>> UpdateUser(Guid id, [FromBody] SportsmenRegisterRequest sportsmenRequest)
+        public async Task<ActionResult<Guid>> Update(Guid id, [FromBody] SportsmenRegisterRequest sportsmenRequest)
         {
             var userId = await _sportsmenService.UpdateUser(id, sportsmenRequest.FullName, sportsmenRequest.IsMale, sportsmenRequest.Birthday,
                 sportsmenRequest.Category, sportsmenRequest.Beginnning, sportsmenRequest.Address, sportsmenRequest.Contacts);
@@ -55,7 +61,7 @@ namespace Coach_s_Log.Controllers
 
         [Authorize(Policy = "Admin")]
         [HttpDelete("[action]")]
-        public async Task<ActionResult<Guid>> DeleteUser(Guid id)
+        public async Task<ActionResult<Guid>> Delete(Guid id)
         {
             var userId = await _sportsmenService.DeleteUser(id);
 

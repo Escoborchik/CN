@@ -17,12 +17,16 @@ namespace Coach.DAL.Repositories
         public async Task<List<Sportsmen>> Get()
         {
             var sportsmenEntities = await _context.Sportsmens
+                .Include(s=> s.PayInformation)
                 .AsNoTracking()
                 .ToListAsync();
 
             var sportsmens = sportsmenEntities
                 .Select(b => Sportsmen.Create(b.Id, b.UserName, b.PasswordHash, b.FullName, b.IsMale, b.Birthday,
-                b.Category, b.Beginnning, b.Address, b.Contacts).Sportsmen)
+                b.Category, b.Beginnning, b.Address, b.Contacts,
+                PayInformation.Create(b.PayInformation.Id,b.PayInformation.Summary,
+                b.PayInformation.Overpayment,b.PayInformation.Debt,b.PayInformation.Images).PayInformation,
+                b.Attendance.Select(a => Attendance.Create(a.Date,a.IsPresent)).ToList()).Sportsmen)
                 .ToList();
 
             return sportsmens;
@@ -41,8 +45,9 @@ namespace Coach.DAL.Repositories
                 Category = sportsmen.Category,
                 Beginnning = sportsmen.Beginnning,
                 Address = sportsmen.Address,
-                Contacts = sportsmen.Contacts
-                
+                Contacts = sportsmen.Contacts,
+                PayInformation = new(),
+                Attendance = []
 
             };
 
@@ -82,12 +87,16 @@ namespace Coach.DAL.Repositories
         public async Task<Sportsmen> GetByUserName(string userName)
         {
             var userEntity = await _context.Sportsmens
+                .Include(s => s.PayInformation)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.UserName == userName) ?? throw new Exception("No user!");
 
             var sportsmen = Sportsmen.Create(userEntity.Id, userEntity.UserName, userEntity.PasswordHash, userEntity.FullName,
                 userEntity.IsMale, userEntity.Birthday, userEntity.Category, userEntity.Beginnning,
-                userEntity.Address, userEntity.Contacts).Sportsmen;
+                userEntity.Address, userEntity.Contacts,
+                PayInformation.Create(userEntity.PayInformation.Id, userEntity.PayInformation.Summary,
+                userEntity.PayInformation.Overpayment, userEntity.PayInformation.Debt, userEntity.PayInformation.Images).PayInformation,
+                userEntity.Attendance.Select(a => Attendance.Create(a.Date, a.IsPresent)).ToList()).Sportsmen;
             return sportsmen;
         }
     }

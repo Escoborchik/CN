@@ -1,12 +1,11 @@
 ﻿using Coach.Core.Interfaces;
 using Coach_s_Log.DTO.CoachDTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coach_s_Log.Controllers
 {
-    
+
     [ApiController]
     [Route("[controller]")]
     public class CoachController : ControllerBase
@@ -21,7 +20,7 @@ namespace Coach_s_Log.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<List<CoachResponse>>> GetCoaches()
         {
-            var coaches = await _coachService.GetAllUsers();
+            var coaches = await _coachService.GetAllCoaches();
 
             var response = coaches.Select(b => new CoachResponse(b.Id, b.FullName, b.Email, b.PasswordHash));
 
@@ -42,26 +41,27 @@ namespace Coach_s_Log.Controllers
         public async Task<ActionResult<Guid>> Register([FromBody] CoachRegisterRequest coachRequest)
         {
 
-            var userId = await _coachService.CreateUser(coachRequest.FullName,
+            var userId = await _coachService.CreateCoach(coachRequest.FullName,
                 coachRequest.Email,
                 coachRequest.Password);
 
             return Ok(userId);
         }
 
+        [Authorize()]
         [HttpPut("[action]")]
-        public async Task<ActionResult<Guid>> UpdateUser(Guid id, [FromBody] CoachRegisterRequest coachRequest)
+        public async Task<ActionResult<Guid>> Update(Guid id, [FromBody] CoachRegisterRequest coachRequest)
         {
-            var userId = await _coachService.UpdateUser(id, coachRequest.FullName, coachRequest.Email);
+            var userId = await _coachService.UpdateCoach(id, coachRequest.FullName, coachRequest.Email);
 
             return Ok(userId);
         }
 
         [Authorize(Policy = "Admin")]
         [HttpDelete("[action]")]
-        public async Task<ActionResult<Guid>> DeleteUser(Guid id)
+        public async Task<ActionResult<Guid>> Delete(Guid id)
         {
-            var userId = await _coachService.DeleteUser(id);
+            var userId = await _coachService.DeleteCoach(id);
 
             return Ok(userId);
         }
