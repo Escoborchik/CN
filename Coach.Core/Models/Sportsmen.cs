@@ -3,7 +3,7 @@
     public class Sportsmen
     {
         public Sportsmen(Guid id, string userName, string passwordHash, string fullName,
-            bool isMale, DateTime birthday, int category, DateTime beginnning,
+            bool isMale, DateOnly birthday, int category, DateOnly beginnning,
             string address, string contacts,PayInformation payInformation, List<Attendance> attendance/*  Gruop? gruop,  */)
         {
             Id = id;
@@ -27,9 +27,9 @@
         public string PasswordHash { get; } = string.Empty;
         public string FullName { get; } = string.Empty;
         public bool IsMale { get; }
-        public DateTime Birthday { get; }
+        public DateOnly Birthday { get; }
         public int Category { get; }
-        public DateTime Beginnning { get; }
+        public DateOnly Beginnning { get; }
         public string Address { get; } = string.Empty;
         public string Contacts { get; } = string.Empty;
         public PayInformation PayInformation { get; }
@@ -37,7 +37,7 @@
         //public Gruop? Gruop { get; }         
 
         public static (Sportsmen Sportsmen, string Error) Create(Guid id, string userName, string passwordHash, string fullName,
-            bool isMale, DateTime birthday, int category, DateTime beginnning,
+            bool isMale, DateOnly birthday, int category, DateOnly beginnning,
             string address, string contacts, PayInformation payInformation, List<Attendance> attendance/*,   Gruop? gruop, */)
         {
             var error = string.Empty;

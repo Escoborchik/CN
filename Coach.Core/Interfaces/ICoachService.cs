@@ -7,7 +7,7 @@ namespace Coach.Core.Interfaces
         Task<Guid> CreateCoach(string fullName, string email, string password);
         Task<Guid> DeleteCoach(Guid id);
         Task<List<CoachModel>> GetAllCoaches();
-        Task<string> Login(string email, string password);
+        Task<(string,Guid)> Login(string email, string password);
         Task<Guid> UpdateCoach(Guid id, string userName, string email);
     }
 }

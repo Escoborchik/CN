@@ -57,18 +57,13 @@ namespace Coach.DAL.Repositories
             return sportsmenEntity.Id;
         }
 
-        public async Task<Guid> Update(Guid id, string fullName,
-            bool isMale, DateTime birthday, int category, DateTime beginnning,
-            string address, string contacts)
+        public async Task<Guid> UpdateSelf(Guid id, bool isMale, DateOnly birthday, string address, string contacts)
         {
             await _context.Sportsmens
                  .Where(b => b.Id == id)
-                 .ExecuteUpdateAsync(s => s
-                     .SetProperty(b => b.FullName, b => fullName)
+                 .ExecuteUpdateAsync(s => s                     
                      .SetProperty(b => b.IsMale, b => isMale)
-                     .SetProperty(b => b.Birthday, b => birthday)
-                     .SetProperty(b => b.Category, b => category)
-                     .SetProperty(b => b.Beginnning, b => beginnning)
+                     .SetProperty(b => b.Birthday, b => birthday)                     
                      .SetProperty(b => b.Address, b => address)
                      .SetProperty(b => b.Contacts, b => contacts));
 

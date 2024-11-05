@@ -6,9 +6,9 @@ namespace Coach_s_Log.DTO.SportsmenDTO
     public record class SportsmenResponse(
         string FullName,
         bool IsMale,
-        DateTime Birthday,
+        DateOnly Birthday,
         int Category,
-        DateTime Beginnning,
+        DateOnly Beginnning,
         string Address,
         string Contacts,
         PayInformationResponse payInformation,

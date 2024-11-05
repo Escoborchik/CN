@@ -6,10 +6,14 @@ namespace Coach.BAL.Services
     public class SportsmenService : ISportsmenService
     {
         private readonly ISportsmenRepository _sportsmenRepository;
+        private readonly IPasswordHasher _passwordHasher;
+        private readonly IJWTProvider _jwtprovider;
 
-        public SportsmenService(ISportsmenRepository sportsmenRepository)
+        public SportsmenService(ISportsmenRepository sportsmenRepository, IPasswordHasher passwordHasher, IJWTProvider jwtprovider)
         {
             _sportsmenRepository = sportsmenRepository;
+            _passwordHasher = passwordHasher;
+            _jwtprovider = jwtprovider;
         }
 
         public async Task<List<Sportsmen>> GetAllUsers()
@@ -17,16 +21,17 @@ namespace Coach.BAL.Services
             return await _sportsmenRepository.Get();
         }
 
-        public async Task<Guid> CreateUser(string userName, string password, string fullName,
-            bool isMale, DateTime birthday, int category, DateTime beginnning,
-            string address, string contacts)
+        public async Task<Guid> CreateUser(string userName, string password,
+            string fullName, int category, DateOnly beginnning)
         {
+            var hashPassword = _passwordHasher.Generate(password);
+
             var sportsmen = Sportsmen.Create(
                Guid.NewGuid(), userName,
-               password, fullName,
-               isMale, birthday,
+               hashPassword, fullName,
+               false, DateOnly.MinValue,
                category, beginnning,
-               address, contacts,null, null
+               "", "", null, null
             );
 
             if (string.IsNullOrEmpty(sportsmen.Error))
@@ -41,28 +46,29 @@ namespace Coach.BAL.Services
 
         }
 
-        public async Task<Sportsmen> Login(string userName, string password)
+        public async Task<(Sportsmen,string)> Login(string userName, string password)
         {
             var sportsmen = await _sportsmenRepository.GetByUserName(userName);
 
-            var result = password.Equals(sportsmen.PasswordHash);
+            var result = _passwordHasher.Verify(password, sportsmen.PasswordHash);
 
             if (!result)
             {
                 throw new Exception("Fail to login");
             }
 
-            return sportsmen;
+            var token = _jwtprovider.GenerateTokenSportsmen(sportsmen);
+           
+            return (sportsmen,token);
         }
 
-        public async Task<Guid> UpdateUser(Guid id, string fullName,
-            bool isMale, DateTime birthday, int category, DateTime beginnning,
+        public async Task<Guid> UpdateSelf(Guid id, bool isMale, DateOnly birthday,
             string address, string contacts)
         {
-            return await _sportsmenRepository.Update(id, fullName, isMale, birthday, category, beginnning, address, contacts);
+            return await _sportsmenRepository.UpdateSelf(id, isMale, birthday,address, contacts);
         }
 
-        public async Task<Guid> DeleteUser(Guid id)
+        public async Task<Guid> Delete(Guid id)
         {
             return await _sportsmenRepository.Delete(id);
         }

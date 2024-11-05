@@ -30,11 +30,13 @@ namespace Coach_s_Log.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult<string>> Login([FromBody] CoachLoginRequest coachRequest)
         {
-            var token = await _coachService.Login(coachRequest.Email, coachRequest.Password);
+            var data = await _coachService.Login(coachRequest.Email, coachRequest.Password);
+            var token = data.Item1;
+            var id = data.Item2;
 
             HttpContext.Response.Cookies.Append("token", token);
 
-            return Ok(token);
+            return Ok(id);
         }
 
         [HttpPost("[action]")]
@@ -45,10 +47,9 @@ namespace Coach_s_Log.Controllers
                 coachRequest.Email,
                 coachRequest.Password);
 
-            return Ok(userId);
+            return Ok();
         }
-
-        [Authorize()]
+        
         [HttpPut("[action]")]
         public async Task<ActionResult<Guid>> Update(Guid id, [FromBody] CoachRegisterRequest coachRequest)
         {
@@ -56,8 +57,7 @@ namespace Coach_s_Log.Controllers
 
             return Ok(userId);
         }
-
-        [Authorize(Policy = "Admin")]
+        
         [HttpDelete("[action]")]
         public async Task<ActionResult<Guid>> Delete(Guid id)
         {

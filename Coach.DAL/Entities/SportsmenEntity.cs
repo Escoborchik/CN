@@ -7,20 +7,14 @@
         public string PasswordHash { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;       
         public bool IsMale { get; set; }
-        public DateTime Birthday { get; set; }
+        public DateOnly Birthday { get; set; }
         public int Category {  get; set; }
-        public DateTime Beginnning { get; set; }
+        public DateOnly Beginnning { get; set; }
         public string Address { get; set; } = string.Empty;
         public string Contacts { get; set; } = string.Empty;
         public PayInformationEntity PayInformation { get; set; }
         public List<AttendanceEntity> Attendance { get; set; } = [];
+        //public GroupEntity Gruop { get; set; }
 
-        //[ForeignKey(nameof(Gruop))]
-        //public Guid GruopId { get; set; }
-        //public GruopEntity? Gruop { get; set; }
-
-        //[ForeignKey(nameof(PayInformation))]
-        //public Guid PayInformationId { get; set; }
-        //public PayInformationEntity? PayInformation { get; set; }
     }
 }

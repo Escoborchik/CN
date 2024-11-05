@@ -4,6 +4,7 @@ namespace Coach.Core.Interfaces
 {
     public interface IJWTProvider
     {
-        string GenerateToken(CoachModel coach);
+        string GenerateTokenCoach(CoachModel coach);
+        string GenerateTokenSportsmen(Sportsmen sportsmen);
     }
 }

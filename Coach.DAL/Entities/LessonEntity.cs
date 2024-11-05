@@ -14,6 +14,6 @@ namespace Coach.DAL.Entities
 
         [ForeignKey(nameof(Gruop))]
         public Guid GruopId { get; set; }
-        public GruopEntity? Gruop { get; set; }
+        public GroupEntity? Gruop { get; set; }
     }
 }

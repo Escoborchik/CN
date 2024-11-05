@@ -16,13 +16,26 @@ namespace Coach.Infrastructure.Authentication
         {
             _options = options.Value;
         }
-        public string GenerateToken(CoachModel coach)
+        public string GenerateTokenCoach(CoachModel coach)
         {
             Claim[] claims = [
-                new("userId", coach.Id.ToString()),
-                new("Admin","true")
+                new("userId", coach.Id.ToString()),                
                 ];
 
+            return WriteToken(claims);
+        }
+
+        public string GenerateTokenSportsmen(Sportsmen sportsmen)
+        {
+            Claim[] claims = [
+                new("userId", sportsmen.Id.ToString())
+                ];
+
+            return WriteToken(claims);
+        }
+
+        private string WriteToken(Claim[] claims)
+        {
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
                 SecurityAlgorithms.HmacSha256);

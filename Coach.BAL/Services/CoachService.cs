@@ -45,7 +45,7 @@ namespace Coach.BAL.Services
 
         }
 
-        public async Task<string> Login(string email, string password)
+        public async Task<(string,Guid)> Login(string email, string password)
         {
             var coach = await _coachRepository.GetByEmail(email);
 
@@ -56,9 +56,9 @@ namespace Coach.BAL.Services
                 throw new Exception("Fail to login");
             }
 
-            var token = _jwtprovider.GenerateToken(coach);
+            var token = _jwtprovider.GenerateTokenCoach(coach);
 
-            return token;
+            return (token,coach.Id);
         }
 
         public async Task<Guid> UpdateCoach(Guid id, string userName, string email)
