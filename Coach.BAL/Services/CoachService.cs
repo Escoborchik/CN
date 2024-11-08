@@ -31,7 +31,7 @@ namespace Coach.BAL.Services
                Guid.NewGuid(),
                fullName,
                email,
-               hashPassword);
+               hashPassword, []);
 
             if (string.IsNullOrEmpty(coach.Error))
             {

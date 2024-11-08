@@ -26,8 +26,10 @@ namespace Coach.DAL.Repositories
                 b.Category, b.Beginnning, b.Address, b.Contacts,
                 PayInformation.Create(b.PayInformation.Id,b.PayInformation.Summary,
                 b.PayInformation.Overpayment,b.PayInformation.Debt,b.PayInformation.Images).PayInformation,
-                b.Attendance.Select(a => Attendance.Create(a.Date,a.IsPresent)).ToList()).Sportsmen)
-                .ToList();
+                b.Attendance.Select(a => Attendance.Create(a.Date,a.IsPresent)).ToList(), 
+                Group.Create(b.Gruop.Id,b.Gruop.Name,b.Gruop.Price).Group
+               
+                ).Sportsmen).ToList();
 
             return sportsmens;
         }
@@ -47,7 +49,8 @@ namespace Coach.DAL.Repositories
                 Address = sportsmen.Address,
                 Contacts = sportsmen.Contacts,
                 PayInformation = new(),
-                Attendance = []
+                Attendance = [],
+                Gruop = new()
 
             };
 
@@ -91,7 +94,8 @@ namespace Coach.DAL.Repositories
                 userEntity.Address, userEntity.Contacts,
                 PayInformation.Create(userEntity.PayInformation.Id, userEntity.PayInformation.Summary,
                 userEntity.PayInformation.Overpayment, userEntity.PayInformation.Debt, userEntity.PayInformation.Images).PayInformation,
-                userEntity.Attendance.Select(a => Attendance.Create(a.Date, a.IsPresent)).ToList()).Sportsmen;
+                userEntity.Attendance.Select(a => Attendance.Create(a.Date, a.IsPresent)).ToList(),
+                Group.Create(userEntity.Gruop.Id, userEntity.Gruop.Name, userEntity.Gruop.Price).Group).Sportsmen;
             return sportsmen;
         }
     }

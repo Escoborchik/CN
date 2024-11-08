@@ -14,7 +14,7 @@
         public string Contacts { get; set; } = string.Empty;
         public PayInformationEntity PayInformation { get; set; }
         public List<AttendanceEntity> Attendance { get; set; } = [];
-        //public GroupEntity Gruop { get; set; }
+        public GroupEntity Gruop { get; set; }
 
     }
 }

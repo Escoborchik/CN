@@ -10,10 +10,10 @@ namespace Coach.DAL.Entities
 
         [ForeignKey(nameof(Coach))]
         public Guid CoachId { get; set; }
-        public CoachEntity? Coach { get; set; }
+        public CoachEntity Coach { get; set; }
 
         [ForeignKey(nameof(Gruop))]
         public Guid GruopId { get; set; }
-        public GroupEntity? Gruop { get; set; }
+        public GroupEntity Gruop { get; set; }
     }
 }

@@ -20,7 +20,10 @@ namespace Coach.DAL.Repositories
                 .ToListAsync();
 
             var coaches = coachEntities
-                .Select(b => CoachModel.Create(b.Id, b.FullName, b.Email, b.PasswordHash).Coach)
+                .Select(b => CoachModel.Create(b.Id, b.FullName, b.Email, b.PasswordHash,
+                b.Gruops.Select(g => Group.Create(g.Id,g.Name,g.Price).Group)
+                .ToList())
+                .Coach)
                 .ToList();
 
             return coaches;
@@ -34,6 +37,7 @@ namespace Coach.DAL.Repositories
                 FullName = coach.FullName,
                 Email = coach.Email,
                 PasswordHash = coach.PasswordHash,
+                Gruops = []
 
             };
 
@@ -69,7 +73,11 @@ namespace Coach.DAL.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("No user!");
 
-            var coach = CoachModel.Create(userEntity.Id, userEntity.FullName, userEntity.Email, userEntity.PasswordHash).Coach;
+            var coach = CoachModel.Create(userEntity.Id, userEntity.FullName, userEntity.Email, userEntity.PasswordHash,
+                userEntity.Gruops.Select(g => Group.Create(g.Id,g.Name,g.Price)
+                .Group)
+                .ToList()
+                ).Coach;
             return coach;
         }
     }

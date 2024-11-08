@@ -25,6 +25,8 @@ namespace Coach_s_Log
             services.AddScoped<IJWTProvider, JWTProvider>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IDataGenerator, DataGenerator>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IGroupService, GroupService>();
 
             services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
             services.AddDbContext<CoachLogDbContext>(options =>

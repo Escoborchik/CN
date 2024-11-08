@@ -31,7 +31,7 @@ namespace Coach.BAL.Services
                hashPassword, fullName,
                false, DateOnly.MinValue,
                category, beginnning,
-               "", "", null, null
+               "", "", null, null,null
             );
 
             if (string.IsNullOrEmpty(sportsmen.Error))
