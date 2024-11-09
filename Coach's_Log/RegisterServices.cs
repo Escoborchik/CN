@@ -27,6 +27,8 @@ namespace Coach_s_Log
             services.AddScoped<IDataGenerator, DataGenerator>();
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
+            services.AddScoped<ILessonService, LessonService>();
 
             services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
             services.AddDbContext<CoachLogDbContext>(options =>

@@ -26,7 +26,7 @@ namespace Coach_s_Log.Controllers
 
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<Guid>> Create(Guid id, [FromBody] GroupRequest groupRequest)
+        public async Task<ActionResult<Guid>> CreateGroup(Guid id, [FromBody] GroupRequest groupRequest)
         {
             var userId = await _groupService.CreateGroup(groupRequest.Name,groupRequest.Price,groupRequest.Sportsmens);
 
@@ -36,7 +36,7 @@ namespace Coach_s_Log.Controllers
 
 
         [HttpPut("[action]")]
-        public async Task<ActionResult<Guid>> Update(Guid id, [FromBody] GroupRequest groupRequest)
+        public async Task<ActionResult<Guid>> UpdateGroup(Guid id, [FromBody] GroupRequest groupRequest)
         {
             var userId = await _groupService.UpdateGroup(id, groupRequest.Name, groupRequest.Price, groupRequest.Sportsmens);
 
@@ -44,7 +44,7 @@ namespace Coach_s_Log.Controllers
         }
 
         [HttpDelete("[action]")]
-        public async Task<ActionResult<Guid>> Delete(Guid id)
+        public async Task<ActionResult<Guid>> DeleteGroup(Guid id)
         {
             var userId = await _groupService.DeleteGroup(id);
 

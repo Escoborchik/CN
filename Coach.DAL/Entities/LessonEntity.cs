@@ -1,19 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Coach.DAL.Entities
 {
     public class LessonEntity
     {
+        [Key]
         public Guid Id { get; set; }
-
-        public DateTime DateTime { get; set; }
-
-        [ForeignKey(nameof(Coach))]
-        public Guid CoachId { get; set; }
-        public CoachEntity Coach { get; set; }
-
-        [ForeignKey(nameof(Gruop))]
-        public Guid GruopId { get; set; }
-        public GroupEntity Gruop { get; set; }
+        public DateTime DateTime { get; set; }          
+        public Guid Coach { get; set; }     
+        public Guid Gruop { get; set; }
     }
 }

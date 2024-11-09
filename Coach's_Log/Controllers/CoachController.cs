@@ -28,7 +28,7 @@ namespace Coach_s_Log.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<string>> Login([FromBody] CoachLoginRequest coachRequest)
+        public async Task<ActionResult<string>> LoginCoach([FromBody] CoachLoginRequest coachRequest)
         {
             var data = await _coachService.Login(coachRequest.Email, coachRequest.Password);
             var token = data.Item1;
@@ -40,7 +40,7 @@ namespace Coach_s_Log.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<Guid>> Register([FromBody] CoachRegisterRequest coachRequest)
+        public async Task<ActionResult<Guid>> RegisterCoach([FromBody] CoachRegisterRequest coachRequest)
         {
 
             var userId = await _coachService.CreateCoach(coachRequest.FullName,
@@ -51,7 +51,7 @@ namespace Coach_s_Log.Controllers
         }
         
         [HttpPut("[action]")]
-        public async Task<ActionResult<Guid>> Update(Guid id, [FromBody] CoachRegisterRequest coachRequest)
+        public async Task<ActionResult<Guid>> UpdateCoach(Guid id, [FromBody] CoachRegisterRequest coachRequest)
         {
             var userId = await _coachService.UpdateCoach(id, coachRequest.FullName, coachRequest.Email);
 
@@ -59,7 +59,7 @@ namespace Coach_s_Log.Controllers
         }
         
         [HttpDelete("[action]")]
-        public async Task<ActionResult<Guid>> Delete(Guid id)
+        public async Task<ActionResult<Guid>> DeleteCoach(Guid id)
         {
             var userId = await _coachService.DeleteCoach(id);
 

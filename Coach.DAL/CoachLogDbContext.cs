@@ -15,13 +15,14 @@ namespace Coach.DAL
         public DbSet<CoachEntity> Coaches { get; set; }
         public DbSet<SportsmenEntity> Sportsmens { get; set; }
         public DbSet<GroupEntity> Gruops { get; set; }
-        //public DbSet<LessonEntity> Lessons { get; set; }
+        public DbSet<LessonEntity> Lessons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CoachConfiguration());
             modelBuilder.ApplyConfiguration(new SportsmenConfiguration());
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
+            modelBuilder.ApplyConfiguration(new LessonConfiguration());
         }
 
     }

@@ -2,7 +2,7 @@
 {
     public class Lesson
     {
-        private Lesson(Guid id, DateTime dateTime, CoachModel? coach, Group? gruop)
+        private Lesson(Guid id, DateTime dateTime, Guid coach, Guid gruop)
         {
             Id = id;
             DateTime = dateTime;
@@ -12,10 +12,10 @@
 
         public Guid Id { get; }
         public DateTime DateTime { get; }        
-        public CoachModel? Coach { get; }
-        public Group? Gruop { get; }
+        public Guid Coach { get; }
+        public Guid Gruop { get; }
 
-        public static (Lesson Lesson, string Error) Create(Guid id, DateTime dateTime, CoachModel? coach, Group? gruop)
+        public static (Lesson Lesson, string Error) Create(Guid id, DateTime dateTime, Guid coach, Guid gruop)
         {
             var error = string.Empty;           
 

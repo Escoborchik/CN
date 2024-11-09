@@ -28,7 +28,7 @@ namespace Coach_s_Log.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<SportsmenResponse>> Login([FromBody] SportsmenLoginRequest sportsmenRequest)
+        public async Task<ActionResult<SportsmenResponse>> LoginSportsmen([FromBody] SportsmenLoginRequest sportsmenRequest)
         {
             var data = await _sportsmenService.Login(sportsmenRequest.UserName, sportsmenRequest.Password);
             var sportsmen = data.Item1;
@@ -59,7 +59,7 @@ namespace Coach_s_Log.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<Guid>> Register([FromBody] SportsmenRegisterRequest sportsmenRequest)
+        public async Task<ActionResult<Guid>> RegisterSportsmen([FromBody] SportsmenRegisterRequest sportsmenRequest)
         {
             await _sportsmenService.CreateUser(sportsmenRequest.UserName, sportsmenRequest.Password, sportsmenRequest.FullName,
                 sportsmenRequest.Category,
@@ -77,7 +77,7 @@ namespace Coach_s_Log.Controllers
         }
         
         [HttpDelete("[action]")]
-        public async Task<ActionResult<Guid>> Delete(Guid id)
+        public async Task<ActionResult<Guid>> DeleteSportsmen(Guid id)
         {
             var userId = await _sportsmenService.Delete(id);
 
