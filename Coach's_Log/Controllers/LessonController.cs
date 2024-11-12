@@ -17,17 +17,18 @@ namespace Coach_s_Log.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<List<Lesson>>> GetLessons()
+        public async Task<ActionResult<List<LessonResponse>>> GetLessons()
         {
-            var groups = await _lessonService.GetAllLessons();
-
-            return Ok(groups);
+            var lessons = await _lessonService.GetAllLessons();
+            var answer = lessons.Select(l => new LessonResponse(l.Price,l.Time,l.Date,l.Group.Name)).ToList();
+            return Ok(lessons);
         }
 
         [HttpPost("[action]")]
         public async Task<ActionResult<Guid>> CreateLesson([FromBody] LessonRequest lessonRequest)
         {
-            var userId = await _lessonService.CreateLesson(lessonRequest.DateTime,lessonRequest.Coach,lessonRequest.Group);
+            var userId = await _lessonService.CreateLesson(lessonRequest.CoachId, lessonRequest.GroupId,
+                lessonRequest.Price, lessonRequest.Date, lessonRequest.Time);
 
             return Ok(userId);
         }
@@ -35,7 +36,7 @@ namespace Coach_s_Log.Controllers
         [HttpDelete("[action]")]
         public async Task<ActionResult<Guid>> DeleteLesson(Guid id)
         {
-            var userId = await _lessonService.DeleteLessonp(id);
+            var userId = await _lessonService.DeleteLesson(id);
 
             return Ok(userId);
         }

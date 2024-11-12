@@ -6,7 +6,10 @@ namespace Coach.DAL.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public short Price { get; set; }             
+
+        [ForeignKey(nameof(Coach))]
+        public Guid CoachId { get; set; }
+        public CoachEntity Coach { get; set; }
         public List<SportsmenEntity> Sportsmens { get; set; } = [];
     }
 }

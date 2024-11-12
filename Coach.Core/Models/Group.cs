@@ -2,27 +2,28 @@
 {
     public class Group
     {
-        private Group(Guid id, string name, short price, List<Guid> sportsmens) : this(id, name,price)
+        private Group(Guid id, Guid coachId, string name, List<Sportsmen> sportsmens) : this(id, coachId,name)
         {                       
             Sportsmens = sportsmens;
+            CoachId = coachId;
         }
 
-        private Group(Guid id, string name, short price)
+        private Group(Guid id, Guid coachId, string name)
         {
             Id = id;
-            Name = name;
-            Price = price;             
+            CoachId = coachId;
+            Name = name;             
         }
 
         public Guid Id { get; }
 
-        public string Name { get; } = string.Empty;
+        public string Name { get; } = string.Empty;      
+        public Guid CoachId { get; set; }
+        public CoachModel Coach { get; set; }
 
-        public short Price { get; }
-      
-        public List<Guid> Sportsmens { get; } = [];
+        public List<Sportsmen> Sportsmens { get; } = [];
 
-        public static (Group Group, string Error) Create(Guid id, string name, short price, List<Guid> sportsmens)
+        public static (Group Group, string Error) Create(Guid id, Guid coachId, string name, List<Sportsmen> sportsmens)
         {
             var error = string.Empty;
 
@@ -31,13 +32,13 @@
                 error = "Name can't be empty!";
             }
 
-            var gruop = new Group(id, name, price, sportsmens);
+            var gruop = new Group(id,coachId, name, sportsmens);
 
             return (gruop, error);
 
         }
 
-        public static (Group Group, string Error) Create(Guid id, string name, short price)
+        public static (Group Group, string Error) Create(Guid id, Guid coachId, string name)
         {
             var error = string.Empty;
 
@@ -46,7 +47,7 @@
                 error = "Name can't be empty!";
             }
 
-            var gruop = new Group(id, name, price);
+            var gruop = new Group(id,coachId,name);
 
             return (gruop, error);
 

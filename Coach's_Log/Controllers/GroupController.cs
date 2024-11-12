@@ -24,21 +24,37 @@ namespace Coach_s_Log.Controllers
             return Ok(groups);
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<Group>>> GetCoachesGroupes(Guid coachId)
+        {
+            var groups = await _groupService.GetAllCoachGroupes(coachId);
+
+            return Ok(groups);
+        }
+
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<Guid>> CreateGroup(Guid id, [FromBody] GroupRequest groupRequest)
+        public async Task<ActionResult<Group>> CreateGroup([FromBody] GroupRequest groupRequest)
         {
-            var userId = await _groupService.CreateGroup(groupRequest.Name,groupRequest.Price,groupRequest.Sportsmens);
+            var group = await _groupService.CreateGroup(groupRequest.CoachId, groupRequest.Name);
 
-            return Ok(userId);
+            return Ok(group);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<Guid>> AddSportmenToGroup([FromBody] GroupAddSportsmenRequest groupRequest)
+        {
+            await _groupService.AddSportsmenToGroup(groupRequest.GroupId, groupRequest.Sportsmen);
+
+            return Ok();          
         }
 
 
 
         [HttpPut("[action]")]
-        public async Task<ActionResult<Guid>> UpdateGroup(Guid id, [FromBody] GroupRequest groupRequest)
+        public async Task<ActionResult<Guid>> UpdateGroup([FromBody] GroupUpdateRquest groupUpdateRquest)
         {
-            var userId = await _groupService.UpdateGroup(id, groupRequest.Name, groupRequest.Price, groupRequest.Sportsmens);
+            var userId = await _groupService.UpdateGroup(groupUpdateRquest.groupId, groupUpdateRquest.name, groupUpdateRquest.sportsmen);
 
             return Ok(userId);
         }

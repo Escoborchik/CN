@@ -15,13 +15,13 @@ namespace Coach.DAL.Repositories
 
         public async Task<List<CoachModel>> Get()
         {
-            var coachEntities = await _context.Coaches
+            var coachEntities = await _context.Coaches.Include(c => c.Groups)
                 .AsNoTracking()
                 .ToListAsync();
 
             var coaches = coachEntities
                 .Select(b => CoachModel.Create(b.Id, b.FullName, b.Email, b.PasswordHash,
-                b.Gruops.Select(g => Group.Create(g.Id,g.Name,g.Price).Group)
+                b.Groups.Select(g => Group.Create(g.Id,g.CoachId,g.Name).Group)
                 .ToList())
                 .Coach)
                 .ToList();
@@ -37,7 +37,7 @@ namespace Coach.DAL.Repositories
                 FullName = coach.FullName,
                 Email = coach.Email,
                 PasswordHash = coach.PasswordHash,
-                Gruops = []
+                Groups = []
 
             };
 
@@ -74,7 +74,7 @@ namespace Coach.DAL.Repositories
                 .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("No user!");
 
             var coach = CoachModel.Create(userEntity.Id, userEntity.FullName, userEntity.Email, userEntity.PasswordHash,
-                userEntity.Gruops.Select(g => Group.Create(g.Id,g.Name,g.Price)
+                userEntity.Groups.Select(g => Group.Create(g.Id,g.CoachId,g.Name)
                 .Group)
                 .ToList()
                 ).Coach;

@@ -1,4 +1,6 @@
-﻿namespace Coach.DAL.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Coach.DAL.Entities
 {
     public class SportsmenEntity
     {
@@ -14,7 +16,10 @@
         public string Contacts { get; set; } = string.Empty;
         public PayInformationEntity PayInformation { get; set; }
         public List<AttendanceEntity> Attendance { get; set; } = [];
-        public GroupEntity Gruop { get; set; }
+
+        [ForeignKey(nameof(Group))]
+        public Guid GroupId { get; set; }
+        public GroupEntity Group { get; set; }
 
     }
 }

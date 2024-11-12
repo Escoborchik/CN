@@ -40,10 +40,10 @@ namespace Coach_s_Log.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<Guid>> RegisterCoach([FromBody] CoachRegisterRequest coachRequest)
+        public async Task<ActionResult> RegisterCoach([FromBody] CoachRegisterRequest coachRequest)
         {
 
-            var userId = await _coachService.CreateCoach(coachRequest.FullName,
+            await _coachService.CreateCoach(coachRequest.FullName,
                 coachRequest.Email,
                 coachRequest.Password);
 

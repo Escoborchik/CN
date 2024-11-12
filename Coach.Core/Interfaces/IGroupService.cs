@@ -4,9 +4,11 @@ namespace Coach.BAL.Services
 {
     public interface IGroupService
     {
-        Task<Guid> CreateGroup(string name, short price, List<Guid> sportsmens);
+        Task<Group> CreateGroup(Guid coachId,string name);
         Task<Guid> DeleteGroup(Guid id);
         Task<List<Group>> GetAllGroupes();
-        Task<Guid> UpdateGroup(Guid id, string name, short price, List<Guid> sportsmens);
+        Task<List<Group>> GetAllCoachGroupes(Guid coachId);
+        Task<Guid> UpdateGroup(Guid id, string name, List<Guid> sportsmens);
+        Task AddSportsmenToGroup(Guid groupId, List<Guid> sportsmen);
     }
 }

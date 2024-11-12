@@ -24,7 +24,7 @@ namespace Coach_s_Log.Controllers
         public ActionResult<DataEntry> MakeDataEntry([FromBody] string fullName)
         {
             var answer = _dataGenerator.Generate(fullName);
-            return Ok(new DataEntry(answer.Item1,answer.Item2));
+            return Ok(new DataEntry(answer.Item1, answer.Item2));
         }
 
         [HttpPost("[action]")]
@@ -35,25 +35,32 @@ namespace Coach_s_Log.Controllers
             var token = data.Item2;
 
             HttpContext.Response.Cookies.Append("token", token);
-            
-            return Ok(new SportsmenResponse(sportsmen.FullName, sportsmen.IsMale, sportsmen.Birthday, sportsmen.Category,
-                sportsmen.Beginnning, sportsmen.Address, sportsmen.Contacts,
-                new PayInformationResponse(sportsmen.PayInformation.Summary, sportsmen.PayInformation.Overpayment,
-                sportsmen.PayInformation.Debt, sportsmen.PayInformation.Images), sportsmen.Attendance));
+
+            return Ok(new SportsmenResponse(sportsmen.Id, sportsmen.FullName));
+
+            // смена личных данных: пол, класс в школе, др, адресс, телефон ученика, телефон родителя
+            // посмотреть посещение
         }
 
-        
+
 
         [HttpGet("[action]")]
         public async Task<ActionResult<List<SportsmenResponse>>> GetSportsmens()
         {
             var sportsmens = await _sportsmenService.GetAllUsers();
 
-            var response = sportsmens.Select(sportsmen => new SportsmenResponse(sportsmen.FullName, sportsmen.IsMale, sportsmen.Birthday,
-                sportsmen.Category, sportsmen.Beginnning, sportsmen.Address, sportsmen.Contacts,
-                new PayInformationResponse(sportsmen.PayInformation.Summary, sportsmen.PayInformation.Overpayment,
-                sportsmen.PayInformation.Debt, sportsmen.PayInformation.Images),
-                sportsmen.Attendance));
+            var response = sportsmens.Select(s => new SportsmenResponse(s.Id, s.FullName));
+
+            return Ok(response);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<SportsmenResponse>>> GetAttendance(Guid sportsmanId)
+        {
+            // Наименование группы, посещение: дата и флаг, 
+            var sportsmens = await _sportsmenService.GetAllUsers();
+
+            var response = sportsmens.Select(s => new SportsmenResponse(s.Id, s.FullName));
 
             return Ok(response);
         }
@@ -71,11 +78,11 @@ namespace Coach_s_Log.Controllers
         [HttpPut("[action]")]
         public async Task<ActionResult<Guid>> UpdateSelf(Guid id, [FromBody] SportsmenUpdateRequest sportsmenRequest)
         {
-            var userId = await _sportsmenService.UpdateSelf(id, sportsmenRequest.IsMale, sportsmenRequest.Birthday,
+            await _sportsmenService.UpdateSelf(id, sportsmenRequest.IsMale, sportsmenRequest.Birthday,
                sportsmenRequest.Address, sportsmenRequest.Contacts);
-            return Ok(userId);
+            return Ok();
         }
-        
+
         [HttpDelete("[action]")]
         public async Task<ActionResult<Guid>> DeleteSportsmen(Guid id)
         {

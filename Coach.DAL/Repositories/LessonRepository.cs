@@ -16,32 +16,46 @@ namespace Coach.DAL.Repositories
 
         public async Task<List<Lesson>> Get()
         {
-            var lessonEntities = await _context.Lessons
+            var lessonEntities = await _context.Lessons.Include(l => l.Gruop)
                 .AsNoTracking()
                 .ToListAsync();
 
             var lessons = lessonEntities
-                .Select(b => Lesson.Create(b.Id, b.DateTime, b.Coach, b.Gruop).Lesson).ToList();
-
+                .Select(l => Lesson.Create(l.Id,l.Price,l.Time,l.Date,
+                Group.Create(l.Gruop.Id,l.Gruop.CoachId,l.Gruop.Name).Group).Lesson).ToList();
 
             return lessons;
         }
 
-        public async Task<Guid> Create(Lesson lesson)
+        public async Task<List<Lesson>> Create(List<Lesson> lessons)
         {
-            var lessonEntity = new LessonEntity
+            List<LessonEntity> list = [];
+            var lesson = lessons.FirstOrDefault();
+            var coachId = lesson.CoachId;
+            var groupId = lesson.GruopId;
+            var coach = await _context.Coaches.FirstOrDefaultAsync(c => c.Id == coachId);
+            var group = await _context.Gruops.FirstOrDefaultAsync(c => c.Id == groupId);      
+
+            foreach (var item in lessons) 
             {
-                Id = lesson.Id,
-                DateTime = lesson.DateTime,
-                Coach = lesson.Coach,
-                Gruop = lesson.Gruop,
+                var lessonEntity = new LessonEntity
+                {
+                    Id = item.Id,
+                    Price = item.Price,
+                    Time = item.Time,
+                    Date = item.Date,                    
+                    Coach = coach,
+                    Gruop = group,
+                };
 
-            };
+                list.Add(lessonEntity);
+            }
+            
 
-            await _context.Lessons.AddAsync(lessonEntity);
+            await _context.Lessons.AddRangeAsync(list);
             await _context.SaveChangesAsync();
 
-            return lessonEntity.Id;
+            return lessons;
         }
         public async Task<Guid> Delete(Guid id)
         {

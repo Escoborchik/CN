@@ -18,26 +18,27 @@ namespace Coach.BAL.Services
             return await _lessonRepository.Get();
         }
 
-        public async Task<Guid> CreateLesson(DateTime dateTime, Guid coach, Guid group)
+        public async Task<List<Lesson>> CreateLesson(Guid coachId, Guid groupId, short price, DateOnly date, TimeOnly time)
         {
-
-            var lesson = Lesson.Create(
+            List<Lesson> listLessons = [];
+            for (int i = 0; i < 25; i++)
+            {
+                var lesson = Lesson.Create(
                Guid.NewGuid(),
-               dateTime,
-               coach,
-               group);
+               price,
+               time,
+               date,
+               coachId,
+               groupId);
 
-            if (string.IsNullOrEmpty(lesson.Error))
-            {
-                return await _lessonRepository.Create(lesson.Lesson);
+                listLessons.Add(lesson.Lesson);
+                date = date.AddDays(7);
             }
-            else
-            {
-                throw new Exception(lesson.Error);
-            }
+
+            return await _lessonRepository.Create(listLessons);
         }
 
-        public async Task<Guid> DeleteLessonp(Guid id)
+        public async Task<Guid> DeleteLesson(Guid id)
         {
             return await _lessonRepository.Delete(id);
 

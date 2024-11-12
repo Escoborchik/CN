@@ -17,7 +17,7 @@ namespace Coach.DAL.Repositories
         public async Task<List<Sportsmen>> Get()
         {
             var sportsmenEntities = await _context.Sportsmens
-                .Include(s=> s.PayInformation)
+                .Include(s=> s.PayInformation).Include(s => s.Group)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -27,12 +27,27 @@ namespace Coach.DAL.Repositories
                 PayInformation.Create(b.PayInformation.Id,b.PayInformation.Summary,
                 b.PayInformation.Overpayment,b.PayInformation.Debt,b.PayInformation.Images).PayInformation,
                 b.Attendance.Select(a => Attendance.Create(a.Date,a.IsPresent)).ToList(), 
-                Group.Create(b.Gruop.Id,b.Gruop.Name,b.Gruop.Price).Group
+                Group.Create(b.Group.Id, b.Group.CoachId,b.Group.Name).Group
                
                 ).Sportsmen).ToList();
 
             return sportsmens;
         }
+
+        //public async Task<Sportsmen> GetSportsman(Guid sportsmanId)
+        //{
+        //    var sportsmenEntity = await _context.Sportsmens.Where(s => s.Id == sportsmanId)
+        //        .Include(s => s.PayInformation)
+        //        .AsNoTracking()
+        //        .FirstOrDefaultAsync();
+
+        //    var sportsman = Sportsmen.Create(sportsmenEntity.Id,spo)
+                
+
+              
+
+        //    return sportsmens;
+        //}
 
         public async Task<Guid> Create(Sportsmen sportsmen)
         {
@@ -47,10 +62,8 @@ namespace Coach.DAL.Repositories
                 Category = sportsmen.Category,
                 Beginnning = sportsmen.Beginnning,
                 Address = sportsmen.Address,
-                Contacts = sportsmen.Contacts,
-                PayInformation = new(),
-                Attendance = [],
-                Gruop = new()
+                Contacts = sportsmen.Contacts,  
+                Group = new GroupEntity { Id = Guid.NewGuid(), Name = "Default", Coach = new CoachEntity { Id = Guid.Parse("a7a68df8-7747-41c0-a37f-54f2dfb5c8b4") } }
 
             };
 
@@ -95,7 +108,7 @@ namespace Coach.DAL.Repositories
                 PayInformation.Create(userEntity.PayInformation.Id, userEntity.PayInformation.Summary,
                 userEntity.PayInformation.Overpayment, userEntity.PayInformation.Debt, userEntity.PayInformation.Images).PayInformation,
                 userEntity.Attendance.Select(a => Attendance.Create(a.Date, a.IsPresent)).ToList(),
-                Group.Create(userEntity.Gruop.Id, userEntity.Gruop.Name, userEntity.Gruop.Price).Group).Sportsmen;
+                null).Sportsmen;
             return sportsmen;
         }
     }
