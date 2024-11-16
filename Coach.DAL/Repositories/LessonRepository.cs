@@ -16,13 +16,16 @@ namespace Coach.DAL.Repositories
 
         public async Task<List<Lesson>> Get()
         {
-            var lessonEntities = await _context.Lessons.Include(l => l.Gruop)
+            var lessonEntities = await _context.Lessons
+                .Include(l => l.Gruop)
+                .Include(l => l.Coach)
                 .AsNoTracking()
                 .ToListAsync();
 
             var lessons = lessonEntities
                 .Select(l => Lesson.Create(l.Id,l.Price,l.Time,l.Date,
-                Group.Create(l.Gruop.Id,l.Gruop.CoachId,l.Gruop.Name).Group).Lesson).ToList();
+                Group.Create(l.Gruop.Id,l.Gruop.CoachId,l.Gruop.Name).Group,
+                CoachModel.Create(l.Coach.Id,l.Coach.FullName,l.Coach.Email,l.Coach.PasswordHash).Coach).Lesson).ToList();
 
             return lessons;
         }

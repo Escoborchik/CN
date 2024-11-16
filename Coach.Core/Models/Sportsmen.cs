@@ -4,7 +4,7 @@
     {
         private Sportsmen(Guid id, string userName, string passwordHash, string fullName,
             bool isMale, DateOnly birthday, int category, DateOnly beginnning,
-            string address, string contacts,PayInformation payInformation, List<Attendance> attendance,Group gruop)
+            string address, string contacts,PayInformation payInformation, List<Attendance> attendance, Group gruop)
         {
             Id = id;
             UserName = userName;
@@ -20,6 +20,16 @@
             PayInformation = payInformation;
             Group = gruop;
 
+        }
+
+        private Sportsmen(Guid id, string userName, string passwordHash, string fullName, int category, DateOnly beginnning)
+        {
+            Id = id;
+            UserName = userName;
+            PasswordHash = passwordHash;
+            FullName = fullName;            
+            Category = category;
+            Beginnning = beginnning;            
         }
 
         private Sportsmen(Guid id, string fullName)
@@ -50,6 +60,17 @@
 
             var sportsmen = new Sportsmen(id, userName,passwordHash,fullName,isMale,birthday,
                 category,beginnning,address, contacts,payInformation,attendance,group);
+
+            return (sportsmen, error);
+
+        }
+
+        public static (Sportsmen Sportsmen, string Error) Create(Guid id, string userName,
+            string passwordHash, string fullName, int category, DateOnly beginnning)
+        {
+            var error = string.Empty;
+
+            var sportsmen = new Sportsmen(id, userName,passwordHash,fullName,category,beginnning);
 
             return (sportsmen, error);
 

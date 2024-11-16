@@ -16,11 +16,9 @@
         }
 
         public Guid Id { get; }
-
         public string Name { get; } = string.Empty;      
         public Guid CoachId { get; set; }
         public CoachModel Coach { get; set; }
-
         public List<Sportsmen> Sportsmens { get; } = [];
 
         public static (Group Group, string Error) Create(Guid id, Guid coachId, string name, List<Sportsmen> sportsmens)
@@ -47,7 +45,7 @@
                 error = "Name can't be empty!";
             }
 
-            var gruop = new Group(id,coachId,name);
+            var gruop = new Group(id, coachId, name);
 
             return (gruop, error);
 

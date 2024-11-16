@@ -10,7 +10,6 @@ namespace Coach.BAL.Services
         public GroupService(IGroupRepository groupRepository)
         {
             _groupRepository = groupRepository;
-
         }
 
         public async Task<List<Group>> GetAllGroupes()

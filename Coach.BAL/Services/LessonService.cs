@@ -18,6 +18,12 @@ namespace Coach.BAL.Services
             return await _lessonRepository.Get();
         }
 
+        public async Task<List<Lesson>> GetCoachLessons(Guid coachId)
+        {
+            var lessons =  await _lessonRepository.Get();
+            return lessons.Where(l => l.Coach.Id == coachId).ToList();
+        }
+
         public async Task<List<Lesson>> CreateLesson(Guid coachId, Guid groupId, short price, DateOnly date, TimeOnly time)
         {
             List<Lesson> listLessons = [];

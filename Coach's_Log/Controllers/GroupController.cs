@@ -1,5 +1,6 @@
 ﻿using Coach.BAL.Services;
 using Coach_s_Log.DTO.GroupDTO;
+using Coach_s_Log.DTO.SportsmenDTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
@@ -19,17 +20,20 @@ namespace Coach_s_Log.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<List<Group>>> GetGroupes()
         {
-            var groups = await _groupService.GetAllGroupes();            
+            var groups = await _groupService.GetAllGroupes(); 
+            var answer = groups.Select(g => new GroupResponse(g.Id,g.Name,
+                g.Sportsmens.Select(s => new SportsmenResponse(s.Id,s.FullName)).ToList())).ToList();
 
-            return Ok(groups);
+            return Ok(answer);
         }
 
         [HttpGet("[action]")]
         public async Task<ActionResult<List<Group>>> GetCoachesGroupes(Guid coachId)
         {
             var groups = await _groupService.GetAllCoachGroupes(coachId);
-
-            return Ok(groups);
+            var answer = groups.Select(g => new GroupResponse(g.Id, g.Name,
+               g.Sportsmens.Select(s => new SportsmenResponse(s.Id, s.FullName)).ToList())).ToList();
+            return Ok(answer);
         }
 
 

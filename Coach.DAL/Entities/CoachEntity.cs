@@ -7,6 +7,6 @@
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public List<GroupEntity> Groups { get; set; } = [];
-        public List<LessonEntity> Lessons { get; set; }
+        public List<LessonEntity> Lessons { get; set; } = [];
     }
 }

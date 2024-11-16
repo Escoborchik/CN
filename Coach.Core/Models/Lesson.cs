@@ -14,13 +14,14 @@ namespace Coach.Core.Models
             GruopId = gruopId;
         }
 
-        private Lesson(Guid id, short price, TimeOnly time, DateOnly date, Group group)
+        private Lesson(Guid id, short price, TimeOnly time, DateOnly date, Group group, CoachModel coach)
         {
             Id = id;
             Price = price;
             Time = time;
             Date = date;
             Group = group;
+            Coach = coach;
         }
 
         public Guid Id { get; set; }
@@ -42,11 +43,11 @@ namespace Coach.Core.Models
 
         }
 
-        public static (Lesson Lesson, string Error) Create(Guid id, short price, TimeOnly time, DateOnly date, Group group)
+        public static (Lesson Lesson, string Error) Create(Guid id, short price, TimeOnly time, DateOnly date, Group group, CoachModel coach)
         {
             var error = string.Empty;
 
-            var lesson = new Lesson(id, price, time, date, group);
+            var lesson = new Lesson(id, price, time, date, group, coach);
 
             return (lesson, error);
 

@@ -1,5 +1,4 @@
 ﻿using Coach.Core.Interfaces;
-using Coach.Core.Models;
 using Coach_s_Log.DTO.LessonDTO;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +19,15 @@ namespace Coach_s_Log.Controllers
         public async Task<ActionResult<List<LessonResponse>>> GetLessons()
         {
             var lessons = await _lessonService.GetAllLessons();
-            var answer = lessons.Select(l => new LessonResponse(l.Price,l.Time,l.Date,l.Group.Name)).ToList();
+            var answer = lessons.Select(l => new LessonResponse(l.Price,l.Time,l.Date,l.Group.Name,l.Coach.FullName)).ToList();
+            return Ok(lessons);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<LessonResponse>>> GetCoachLessons(Guid coachId)
+        {
+            var lessons = await _lessonService.GetCoachLessons(coachId);
+            var answer = lessons.Select(l => new LessonResponse(l.Price, l.Time, l.Date, l.Group.Name, l.Coach.FullName)).ToList();
             return Ok(lessons);
         }
 

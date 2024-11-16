@@ -16,39 +16,15 @@ namespace Coach.DAL.Repositories
 
         public async Task<List<Sportsmen>> Get()
         {
-            var sportsmenEntities = await _context.Sportsmens
-                .Include(s=> s.PayInformation).Include(s => s.Group)
+            var sportsmenEntities = await _context.Sportsmens                
                 .AsNoTracking()
                 .ToListAsync();
 
             var sportsmens = sportsmenEntities
-                .Select(b => Sportsmen.Create(b.Id, b.UserName, b.PasswordHash, b.FullName, b.IsMale, b.Birthday,
-                b.Category, b.Beginnning, b.Address, b.Contacts,
-                PayInformation.Create(b.PayInformation.Id,b.PayInformation.Summary,
-                b.PayInformation.Overpayment,b.PayInformation.Debt,b.PayInformation.Images).PayInformation,
-                b.Attendance.Select(a => Attendance.Create(a.Date,a.IsPresent)).ToList(), 
-                Group.Create(b.Group.Id, b.Group.CoachId,b.Group.Name).Group
-               
-                ).Sportsmen).ToList();
+                .Select(b => Sportsmen.Create(b.Id, b.UserName).Sportsmen).ToList();
 
             return sportsmens;
-        }
-
-        //public async Task<Sportsmen> GetSportsman(Guid sportsmanId)
-        //{
-        //    var sportsmenEntity = await _context.Sportsmens.Where(s => s.Id == sportsmanId)
-        //        .Include(s => s.PayInformation)
-        //        .AsNoTracking()
-        //        .FirstOrDefaultAsync();
-
-        //    var sportsman = Sportsmen.Create(sportsmenEntity.Id,spo)
-                
-
-              
-
-        //    return sportsmens;
-        //}
-
+        }        
         public async Task<Guid> Create(Sportsmen sportsmen)
         {
             var sportsmenEntity = new SportsmenEntity
@@ -56,15 +32,9 @@ namespace Coach.DAL.Repositories
                 Id = sportsmen.Id,
                 UserName = sportsmen.UserName,
                 PasswordHash = sportsmen.PasswordHash,
-                FullName = sportsmen.FullName,
-                IsMale = sportsmen.IsMale,
-                Birthday = sportsmen.Birthday,
+                FullName = sportsmen.FullName,                
                 Category = sportsmen.Category,
-                Beginnning = sportsmen.Beginnning,
-                Address = sportsmen.Address,
-                Contacts = sportsmen.Contacts,  
-                Group = new GroupEntity { Id = Guid.NewGuid(), Name = "Default", Coach = new CoachEntity { Id = Guid.Parse("a7a68df8-7747-41c0-a37f-54f2dfb5c8b4") } }
-
+                Beginnning = sportsmen.Beginnning,                                                 
             };
 
             await _context.Sportsmens.AddAsync(sportsmenEntity);
@@ -102,13 +72,7 @@ namespace Coach.DAL.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.UserName == userName) ?? throw new Exception("No user!");
 
-            var sportsmen = Sportsmen.Create(userEntity.Id, userEntity.UserName, userEntity.PasswordHash, userEntity.FullName,
-                userEntity.IsMale, userEntity.Birthday, userEntity.Category, userEntity.Beginnning,
-                userEntity.Address, userEntity.Contacts,
-                PayInformation.Create(userEntity.PayInformation.Id, userEntity.PayInformation.Summary,
-                userEntity.PayInformation.Overpayment, userEntity.PayInformation.Debt, userEntity.PayInformation.Images).PayInformation,
-                userEntity.Attendance.Select(a => Attendance.Create(a.Date, a.IsPresent)).ToList(),
-                null).Sportsmen;
+            var sportsmen = Sportsmen.Create(userEntity.Id, userEntity.UserName).Sportsmen;
             return sportsmen;
         }
     }

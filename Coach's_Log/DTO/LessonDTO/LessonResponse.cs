@@ -4,6 +4,7 @@
         short Price,
         TimeOnly Time,
         DateOnly Date,
-        string GroupName
+        string GroupName,
+        string CoachName
         );
 }

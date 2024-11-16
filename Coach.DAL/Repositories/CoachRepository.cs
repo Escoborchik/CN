@@ -15,14 +15,12 @@ namespace Coach.DAL.Repositories
 
         public async Task<List<CoachModel>> Get()
         {
-            var coachEntities = await _context.Coaches.Include(c => c.Groups)
+            var coachEntities = await _context.Coaches
                 .AsNoTracking()
                 .ToListAsync();
 
             var coaches = coachEntities
-                .Select(b => CoachModel.Create(b.Id, b.FullName, b.Email, b.PasswordHash,
-                b.Groups.Select(g => Group.Create(g.Id,g.CoachId,g.Name).Group)
-                .ToList())
+                .Select(b => CoachModel.Create(b.Id, b.FullName,b.Email,b.PasswordHash)
                 .Coach)
                 .ToList();
 
@@ -36,9 +34,7 @@ namespace Coach.DAL.Repositories
                 Id = coach.Id,
                 FullName = coach.FullName,
                 Email = coach.Email,
-                PasswordHash = coach.PasswordHash,
-                Groups = []
-
+                PasswordHash = coach.PasswordHash,               
             };
 
             await _context.Coaches.AddAsync(coachEntity);
@@ -73,11 +69,7 @@ namespace Coach.DAL.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("No user!");
 
-            var coach = CoachModel.Create(userEntity.Id, userEntity.FullName, userEntity.Email, userEntity.PasswordHash,
-                userEntity.Groups.Select(g => Group.Create(g.Id,g.CoachId,g.Name)
-                .Group)
-                .ToList()
-                ).Coach;
+            var coach = CoachModel.Create(userEntity.Id, userEntity.FullName, userEntity.Email, userEntity.PasswordHash).Coach;
             return coach;
         }
     }

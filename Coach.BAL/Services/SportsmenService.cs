@@ -28,10 +28,8 @@ namespace Coach.BAL.Services
 
             var sportsmen = Sportsmen.Create(
                Guid.NewGuid(), userName,
-               hashPassword, fullName,
-               false, DateOnly.MinValue,
-               category, beginnning,
-               "", "", null, null,null
+               hashPassword, fullName,              
+               category, beginnning               
             );
 
             if (string.IsNullOrEmpty(sportsmen.Error))

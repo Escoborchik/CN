@@ -15,10 +15,7 @@ namespace Coach.DAL.Entities
         public string Address { get; set; } = string.Empty;
         public string Contacts { get; set; } = string.Empty;
         public PayInformationEntity PayInformation { get; set; }
-        public List<AttendanceEntity> Attendance { get; set; } = [];
-
-        [ForeignKey(nameof(Group))]
-        public Guid GroupId { get; set; }
+        public List<AttendanceEntity> Attendance { get; set; } = [];        
         public GroupEntity Group { get; set; }
 
     }
