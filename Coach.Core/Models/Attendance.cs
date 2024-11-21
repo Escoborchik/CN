@@ -2,18 +2,19 @@
 {
     public class Attendance
     {
-        private Attendance(DateTime date, bool isPresent)
+        private Attendance(Guid id, DateOnly date, bool isPresent)
         {
+            AttendanceId = id;
             Date = date;
             IsPresent = isPresent;
         }
-
-        public DateTime Date { get; set; }
+        public Guid AttendanceId { get; set; }
+        public DateOnly Date { get; set; }
         public bool IsPresent { get; set; }
 
-        public static Attendance Create(DateTime date, bool isPresent)
+        public static Attendance Create(Guid id, DateOnly date, bool isPresent)
         {          
-            var attendance = new Attendance(date,isPresent);
+            var attendance = new Attendance(id,date,isPresent);
 
             return attendance;
         }

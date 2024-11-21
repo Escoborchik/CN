@@ -5,8 +5,8 @@ namespace Coach.DAL.Entities
 {
     public class AttendanceEntity
     {
-        [Key]
-        public DateTime Date { get; set; }
+        public Guid Id { get; set; }
+        public DateOnly Date { get; set; }
         public bool IsPresent {  get; set; } 
     }
 }

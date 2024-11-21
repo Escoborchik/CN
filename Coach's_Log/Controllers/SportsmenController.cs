@@ -1,4 +1,5 @@
 ﻿using Coach.Core.Interfaces;
+using Coach.Core.Models;
 using Coach_s_Log.DTO.SportsmenDTO;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,16 +50,12 @@ namespace Coach_s_Log.Controllers
             return Ok(response);
         }
 
-        //[HttpGet("[action]")]
-        //public async Task<ActionResult<List<SportsmenResponse>>> GetAttendance(Guid sportsmanId)
-        //{
-        //    // Наименование группы, посещение: дата и флаг, 
-        //    var sportsmens = await _sportsmenService.GetAllUsers();
-
-        //    var response = sportsmens.Select(s => new SportsmenResponse(s.Id, s.FullName));
-
-        //    return Ok(response);
-        //}
+        [HttpGet("[action]")]
+        public async Task<ActionResult<(string name, List<Attendance>)>> GetAttendance(Guid sportsmanId)
+        {             
+            var tuple = await _sportsmenService.GetAttendance(sportsmanId);           
+            return Ok(tuple);
+        }
 
         [HttpPost("[action]")]
         public async Task<ActionResult<Guid>> RegisterSportsmen([FromBody] SportsmenRegisterRequest sportsmenRequest)

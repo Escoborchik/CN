@@ -9,5 +9,7 @@ namespace Coach.Core.Interfaces
         Task<List<Sportsmen>> GetAllUsers();
         Task<(Sportsmen,string)> Login(string userName, string password);
         Task<Guid> UpdateSelf(Guid id, bool isMale, DateOnly birthday, string address, string contacts);
+        Task CreateAttendance(List<Lesson> lessons);
+        Task<(string name, List<Attendance> attendance)> GetAttendance(Guid sportsmenId);
     }
 }

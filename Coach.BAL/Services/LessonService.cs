@@ -6,10 +6,12 @@ namespace Coach.BAL.Services
     public class LessonService : ILessonService
     {
         private readonly ILessonRepository _lessonRepository;
+        private readonly ISportsmenService _sportsmenService;
 
-        public LessonService(ILessonRepository lessonRepository)
+        public LessonService(ILessonRepository lessonRepository, ISportsmenService sportsmenService)
         {
             _lessonRepository = lessonRepository;
+            _sportsmenService = sportsmenService;
 
         }
 
@@ -40,6 +42,8 @@ namespace Coach.BAL.Services
                 listLessons.Add(lesson.Lesson);
                 date = date.AddDays(7);
             }
+
+            //await _sportsmenService.CreateAttendance(listLessons);
 
             return await _lessonRepository.Create(listLessons);
         }

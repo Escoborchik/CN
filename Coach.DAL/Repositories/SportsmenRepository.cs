@@ -75,5 +75,42 @@ namespace Coach.DAL.Repositories
             var sportsmen = Sportsmen.Create(userEntity.Id, userEntity.UserName).Sportsmen;
             return sportsmen;
         }
+
+        public async Task CreateAttendance(List<Lesson> lessons)
+        {
+            var groupId = lessons.FirstOrDefault().GruopId;
+            var list = new List<AttendanceEntity>();                        
+            foreach (var lesson in lessons)
+            {
+                list.Add(new AttendanceEntity { Id = Guid.NewGuid(), Date=lesson.Date });
+            }
+           var sports = await _context.Sportsmens.Include(s => s.Group)
+               .Include(s => s.Attendance)
+               .Where(b => b.Group.Id == groupId)
+               .ToListAsync();    
+            
+            foreach(var sport in sports)
+            {
+                sport.Attendance = list;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<(string name, List<Attendance> attendance)> GetAttendance(Guid sportsmenId)
+        {
+            var sportsmen = await _context.Sportsmens.Where(s => s.Id == sportsmenId)
+                .Include(s => s.Attendance)
+                .Include(s => s.Group)
+                .FirstOrDefaultAsync();
+            var groupName = sportsmen.Group.Name;
+            var attendance = new List<Attendance>();
+            foreach (var item in sportsmen.Attendance)
+            {
+                attendance.Add(Attendance.Create(item.Id,item.Date,item.IsPresent));
+            }
+
+            return (groupName, attendance);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace Coach_s_Log.Controllers
         {
             var lessons = await _lessonService.GetAllLessons();
             var answer = lessons.Select(l => new LessonResponse(l.Price,l.Time,l.Date,l.Group.Name,l.Coach.FullName)).ToList();
-            return Ok(lessons);
+            return Ok(answer);
         }
 
         [HttpGet("[action]")]
@@ -28,7 +28,7 @@ namespace Coach_s_Log.Controllers
         {
             var lessons = await _lessonService.GetCoachLessons(coachId);
             var answer = lessons.Select(l => new LessonResponse(l.Price, l.Time, l.Date, l.Group.Name, l.Coach.FullName)).ToList();
-            return Ok(lessons);
+            return Ok(answer);
         }
 
         [HttpPost("[action]")]

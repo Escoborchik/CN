@@ -70,5 +70,15 @@ namespace Coach.BAL.Services
         {
             return await _sportsmenRepository.Delete(id);
         }
+
+        public async Task CreateAttendance(List<Lesson> lessons)
+        {
+            await _sportsmenRepository.CreateAttendance(lessons);
+        }
+
+        public async Task<(string name, List<Attendance> attendance)> GetAttendance(Guid sportsmenId)
+        {
+            return await _sportsmenRepository.GetAttendance(sportsmenId);
+        }
     }
 }
