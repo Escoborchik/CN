@@ -8,9 +8,15 @@
             Date = date;
             IsPresent = isPresent;
         }
+
+        public Attendance() 
+        { 
+
+        }
         public Guid AttendanceId { get; set; }
         public DateOnly Date { get; set; }
         public bool IsPresent { get; set; }
+        public Guid SportsmenId { get; set; }
 
         public static Attendance Create(Guid id, DateOnly date, bool isPresent)
         {          

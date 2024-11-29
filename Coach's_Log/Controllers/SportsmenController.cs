@@ -54,7 +54,24 @@ namespace Coach_s_Log.Controllers
         public async Task<ActionResult<(string name, List<Attendance>)>> GetAttendance(Guid sportsmanId)
         {             
             var tuple = await _sportsmenService.GetAttendance(sportsmanId);           
-            return Ok(tuple);
+            return Ok(tuple.attendance);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<(string name, List<Attendance>)>> ChangeAttendance(List<AttendanceRequest> attendances)
+        {
+            var list = new List<Attendance>();
+            foreach(var att in attendances)
+            {
+                list.Add(new Attendance()
+                {
+                    SportsmenId = att.SportsmenId,
+                    Date = att.date,
+                    IsPresent = att.isPresent
+                });
+            }
+            await _sportsmenService.GhangeAttendance(list);
+            return Ok();
         }
 
         [HttpPost("[action]")]

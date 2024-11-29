@@ -11,5 +11,6 @@ namespace Coach.Core.Interfaces
         Task<Guid> UpdateSelf(Guid id, bool isMale, DateOnly birthday, string address, string contacts);
         Task CreateAttendance(List<Lesson> lessons);
         Task<(string name, List<Attendance> attendance)> GetAttendance(Guid sportsmenId);
+        Task GhangeAttendance(List<Attendance> attendances);
     }
 }

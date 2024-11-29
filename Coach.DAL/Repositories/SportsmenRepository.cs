@@ -21,7 +21,7 @@ namespace Coach.DAL.Repositories
                 .ToListAsync();
 
             var sportsmens = sportsmenEntities
-                .Select(b => Sportsmen.Create(b.Id, b.UserName).Sportsmen).ToList();
+                .Select(b => Sportsmen.Create(b.Id, b.FullName).Sportsmen).ToList();
 
             return sportsmens;
         }        
@@ -79,21 +79,22 @@ namespace Coach.DAL.Repositories
         public async Task CreateAttendance(List<Lesson> lessons)
         {
             var groupId = lessons.FirstOrDefault().GruopId;
-            var list = new List<AttendanceEntity>();                        
-            foreach (var lesson in lessons)
-            {
-                list.Add(new AttendanceEntity { Id = Guid.NewGuid(), Date=lesson.Date });
-            }
-           var sports = await _context.Sportsmens.Include(s => s.Group)
+            var sports = await _context.Sportsmens
                .Include(s => s.Attendance)
                .Where(b => b.Group.Id == groupId)
-               .ToListAsync();    
-            
-            foreach(var sport in sports)
-            {
-                sport.Attendance = list;
-            }
+               .ToListAsync();
 
+            var list = new List<AttendanceEntity>();
+            foreach (var sport in sports)
+            {
+                
+                foreach (var lesson in lessons)
+                {
+                    list.Add(new AttendanceEntity { Id = Guid.NewGuid(), Date = lesson.Date, Sportsmen = sport });
+                }               
+            }
+                                                             
+            await _context.Attendances.AddRangeAsync(list);
             await _context.SaveChangesAsync();
         }
 
@@ -111,6 +112,18 @@ namespace Coach.DAL.Repositories
             }
 
             return (groupName, attendance);
+        }
+
+        public async Task GhangeAttendance(List<Attendance> attendances)
+        {
+           foreach(var attendance in attendances)
+           {
+              var les = await _context.Attendances
+                       .FirstOrDefaultAsync(a => a.SportstmenId == attendance.SportsmenId && a.Date == attendance.Date);
+              les.IsPresent = attendance.IsPresent;
+           }  
+           
+          await  _context.SaveChangesAsync();
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Coach.BAL.Services
                 date = date.AddDays(7);
             }
 
-            //await _sportsmenService.CreateAttendance(listLessons);
+            await _sportsmenService.CreateAttendance(listLessons);
 
             return await _lessonRepository.Create(listLessons);
         }

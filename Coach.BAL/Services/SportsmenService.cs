@@ -80,5 +80,11 @@ namespace Coach.BAL.Services
         {
             return await _sportsmenRepository.GetAttendance(sportsmenId);
         }
+
+        public async Task GhangeAttendance(List<Attendance> attendances)
+        {
+
+            await _sportsmenRepository.GhangeAttendance(attendances);
+        }
     }
 }
