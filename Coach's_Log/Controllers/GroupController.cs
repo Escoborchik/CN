@@ -63,12 +63,12 @@ namespace Coach_s_Log.Controllers
             return Ok(userId);
         }
 
-        [HttpDelete("[action]")]
-        public async Task<ActionResult<Guid>> DeleteGroup(Guid id)
-        {
-            var userId = await _groupService.DeleteGroup(id);
+        //[HttpDelete("[action]")]
+        //public async Task<ActionResult<Guid>> DeleteGroup(Guid id)
+        //{
+        //    var userId = await _groupService.DeleteGroup(id);
 
-            return Ok(userId);
-        }
+        //    return Ok(userId);
+        //}
     }
 }

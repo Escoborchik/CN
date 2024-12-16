@@ -29,6 +29,8 @@ namespace Coach_s_Log
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ILessonRepository, LessonRepository>();
             services.AddScoped<ILessonService, LessonService>();
+            services.AddScoped<IPayInformationRepository, PayInformationRepository>();
+            services.AddScoped<IPayInformationService, PayInformationService>();
 
             services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
             services.AddDbContext<CoachLogDbContext>(options =>

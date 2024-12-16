@@ -27,6 +27,19 @@ namespace Coach.DAL.Repositories
             return coaches;
         }
 
+        public async Task<List<Sportsmen>> GetCoachSportsmens(Guid CoachId)
+        {
+            var coach = await _context.Coaches.Where(c => c.Id == CoachId).Include(c => c.Sportsmens).FirstOrDefaultAsync();
+                
+
+            var sportsmens = coach.Sportsmens
+                .Select(b => Sportsmen.Create(b.Id, b.FullName)
+                .Sportsmen)
+                .ToList();
+
+            return sportsmens;
+        }
+
         public async Task<Guid> Create(CoachModel coach)
         {
             var coachEntity = new CoachEntity

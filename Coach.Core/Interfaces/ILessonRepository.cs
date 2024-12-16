@@ -6,6 +6,7 @@ namespace Coach.Core.Interfaces
     {
         Task<List<Lesson>> Create(List<Lesson> lessons);
         Task<Guid> Delete(Guid id);
+        Task<int> GetPrice(Guid groupId);
         Task<List<Lesson>> Get();
     }
 }

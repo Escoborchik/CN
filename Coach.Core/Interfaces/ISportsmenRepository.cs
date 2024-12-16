@@ -12,5 +12,6 @@ namespace Coach.Core.Interfaces
         Task CreateAttendance(List<Lesson> lessons);
         Task<(string name, List<Attendance> attendance)> GetAttendance(Guid sportsmenId);
         Task GhangeAttendance(List<Attendance> attendances);
+        Task<Guid> GetGroupId(Guid sporstmenId);
     }
 }

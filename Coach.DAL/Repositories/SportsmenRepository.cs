@@ -24,7 +24,16 @@ namespace Coach.DAL.Repositories
                 .Select(b => Sportsmen.Create(b.Id, b.FullName).Sportsmen).ToList();
 
             return sportsmens;
-        }        
+        }
+
+        public async Task<Guid> GetGroupId(Guid sporstmenId)
+        {
+            var sportsmen = await _context.Sportsmens.Where(s => s.Id == sporstmenId).Include(s => s.Group).FirstOrDefaultAsync();                                        
+
+            return sportsmen.Group.Id;
+        }
+
+
         public async Task<Guid> Create(Sportsmen sportsmen)
         {
             var sportsmenEntity = new SportsmenEntity
@@ -34,7 +43,8 @@ namespace Coach.DAL.Repositories
                 PasswordHash = sportsmen.PasswordHash,
                 FullName = sportsmen.FullName,                
                 Category = sportsmen.Category,
-                Beginnning = sportsmen.Beginnning,                                                 
+                Beginnning = sportsmen.Beginnning,
+                CoachEntity = await _context.Coaches.FirstOrDefaultAsync(c => c.Id == sportsmen.CoachId)
             };
 
             await _context.Sportsmens.AddAsync(sportsmenEntity);
@@ -67,12 +77,11 @@ namespace Coach.DAL.Repositories
 
         public async Task<Sportsmen> GetByUserName(string userName)
         {
-            var userEntity = await _context.Sportsmens
-                .Include(s => s.PayInformation)
+            var userEntity = await _context.Sportsmens                
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.UserName == userName) ?? throw new Exception("No user!");
 
-            var sportsmen = Sportsmen.Create(userEntity.Id, userEntity.UserName).Sportsmen;
+            var sportsmen = Sportsmen.Create(userEntity.Id, userEntity.Id, userEntity.UserName,userEntity.PasswordHash,userEntity.FullName,userEntity.Category,userEntity.Beginnning).Sportsmen;
             return sportsmen;
         }
 
@@ -110,6 +119,8 @@ namespace Coach.DAL.Repositories
             {
                 attendance.Add(Attendance.Create(item.Id,item.Date,item.IsPresent));
             }
+
+            attendance = [.. attendance.OrderBy(a => a.Date)];
 
             return (groupName, attendance);
         }

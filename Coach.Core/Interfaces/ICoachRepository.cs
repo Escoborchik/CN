@@ -9,5 +9,6 @@ namespace Coach.Core.Interfaces
         Task<List<CoachModel>> Get();
         Task<CoachModel> GetByEmail(string email);
         Task<Guid> Update(Guid id, string fullName, string email);
+        Task<List<Sportsmen>> GetCoachSportsmens(Guid CoachId);
     }
 }

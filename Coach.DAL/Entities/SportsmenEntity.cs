@@ -13,10 +13,11 @@ namespace Coach.DAL.Entities
         public int Category {  get; set; }
         public DateOnly Beginnning { get; set; }
         public string Address { get; set; } = string.Empty;
-        public string Contacts { get; set; } = string.Empty;
-        public PayInformationEntity PayInformation { get; set; }
+        public string Contacts { get; set; } = string.Empty;       
         public List<AttendanceEntity> Attendance { get; set; } = [];        
+        public List<PaymentEntity> PayInformationEntities { get; set; } = [];        
         public GroupEntity Group { get; set; }
+        public CoachEntity CoachEntity { get; set; }
 
     }
 }

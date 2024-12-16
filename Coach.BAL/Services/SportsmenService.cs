@@ -8,12 +8,17 @@ namespace Coach.BAL.Services
         private readonly ISportsmenRepository _sportsmenRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJWTProvider _jwtprovider;
+        private readonly ICoachRepository _coachRepository;
 
-        public SportsmenService(ISportsmenRepository sportsmenRepository, IPasswordHasher passwordHasher, IJWTProvider jwtprovider)
+        public SportsmenService(ISportsmenRepository sportsmenRepository,
+            IPasswordHasher passwordHasher,
+            IJWTProvider jwtprovider,
+            ICoachRepository coachRepository)
         {
             _sportsmenRepository = sportsmenRepository;
             _passwordHasher = passwordHasher;
             _jwtprovider = jwtprovider;
+            _coachRepository = coachRepository;
         }
 
         public async Task<List<Sportsmen>> GetAllUsers()
@@ -21,13 +26,20 @@ namespace Coach.BAL.Services
             return await _sportsmenRepository.Get();
         }
 
-        public async Task<Guid> CreateUser(string userName, string password,
+        public async Task<List<Sportsmen>> GetCoachSportsmens(Guid coachId)
+        {
+            var sportsmens = await _coachRepository.GetCoachSportsmens(coachId);           
+
+            return sportsmens;
+        }
+
+        public async Task<Guid> CreateUser(Guid coachId, string userName, string password,
             string fullName, int category, DateOnly beginnning)
         {
             var hashPassword = _passwordHasher.Generate(password);
 
             var sportsmen = Sportsmen.Create(
-               Guid.NewGuid(), userName,
+               Guid.NewGuid(), coachId, userName,
                hashPassword, fullName,              
                category, beginnning               
             );

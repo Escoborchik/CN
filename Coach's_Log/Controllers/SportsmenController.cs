@@ -1,4 +1,5 @@
-﻿using Coach.Core.Interfaces;
+﻿using Coach.BAL.Services;
+using Coach.Core.Interfaces;
 using Coach.Core.Models;
 using Coach_s_Log.DTO.SportsmenDTO;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace Coach_s_Log.Controllers
     public class SportsmenController : ControllerBase
     {
         private readonly ISportsmenService _sportsmenService;
-        private readonly IDataGenerator _dataGenerator;
+        private readonly IDataGenerator _dataGenerator;        
 
         public SportsmenController(ISportsmenService userService, IDataGenerator dataGenerator)
         {
@@ -51,6 +52,16 @@ namespace Coach_s_Log.Controllers
         }
 
         [HttpGet("[action]")]
+        public async Task<ActionResult<List<SportsmenResponse>>> GetCoachSportsmens(Guid coachId)
+        {
+            var sportsmens = await _sportsmenService.GetCoachSportsmens(coachId);
+
+            var response = sportsmens.Select(s => new SportsmenResponse(s.Id, s.FullName));
+
+            return Ok(response);
+        }
+
+        [HttpGet("[action]")]
         public async Task<ActionResult<(string name, List<Attendance>)>> GetAttendance(Guid sportsmanId)
         {             
             var tuple = await _sportsmenService.GetAttendance(sportsmanId);           
@@ -77,7 +88,7 @@ namespace Coach_s_Log.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult<Guid>> RegisterSportsmen([FromBody] SportsmenRegisterRequest sportsmenRequest)
         {
-            await _sportsmenService.CreateUser(sportsmenRequest.UserName, sportsmenRequest.Password, sportsmenRequest.FullName,
+            await _sportsmenService.CreateUser(sportsmenRequest.CoachId,sportsmenRequest.UserName, sportsmenRequest.Password, sportsmenRequest.FullName,
                 sportsmenRequest.Category,
             sportsmenRequest.Beginnning);
             return Ok();

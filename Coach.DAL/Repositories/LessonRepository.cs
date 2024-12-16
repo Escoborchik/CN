@@ -30,6 +30,13 @@ namespace Coach.DAL.Repositories
             return lessons;
         }
 
+        public async Task<int> GetPrice(Guid groupId)
+        {
+            var lessonEntity = await _context.Lessons.FirstOrDefaultAsync(l => l.GruopId == groupId);            
+
+            return lessonEntity.Price;
+        }
+
         public async Task<List<Lesson>> Create(List<Lesson> lessons)
         {
             List<LessonEntity> list = [];

@@ -17,6 +17,7 @@ namespace Coach.DAL
         public DbSet<GroupEntity> Gruops { get; set; }
         public DbSet<LessonEntity> Lessons { get; set; }
         public DbSet<AttendanceEntity> Attendances { get; set; }
+        public DbSet<PaymentEntity> PayInformations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
