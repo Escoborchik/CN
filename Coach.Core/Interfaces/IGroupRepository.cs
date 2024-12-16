@@ -9,5 +9,6 @@ namespace Coach.Core.Interfaces
         Task<List<Group>> Get();
         Task<Guid> Update(Guid id, string name, List<Guid> sportsmens);
         Task AddSportsmenToGroup(Guid groupId, List<Guid> Sportsmen);
+        Task<Group> GetGroup(Guid groupId);
     }
 }

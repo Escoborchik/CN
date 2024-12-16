@@ -24,7 +24,7 @@ namespace Coach.DAL.Repositories
 
             return pays;
         }
-        public async Task<Payment> Create(Payment payInformation)
+        public async Task Create(Payment payInformation)
         {
             var sportsmen = await _context.Sportsmens.FirstOrDefaultAsync(s => s.Id == payInformation.SportsmenId);
             var paymentEntity = new PaymentEntity
@@ -39,9 +39,7 @@ namespace Coach.DAL.Repositories
             };
 
             await _context.PayInformations.AddAsync(paymentEntity);
-            await _context.SaveChangesAsync();
-
-            return payInformation;
+            await _context.SaveChangesAsync();            
         }
     }
 }

@@ -27,6 +27,15 @@ namespace Coach.DAL.Repositories
             return groups;
         }
 
+        public async Task<Group> GetGroup(Guid groupId)
+        {
+            var groupEntity =  await _context.Gruops.Include(g => g.Sportsmens).FirstOrDefaultAsync(g => g.Id == groupId);
+
+            return Group.Create(groupEntity.Id, groupEntity.CoachId, groupEntity.Name, groupEntity.Sportsmens.Select(
+                s => Sportsmen.Create(s.Id,s.FullName).Sportsmen).ToList()).Group;
+                           
+        }
+
         public async Task AddSportsmenToGroup(Guid groupId, List<Guid> Sportsmen)
         {
             var groupEntity = await _context.Gruops.FirstOrDefaultAsync(g => g.Id == groupId);

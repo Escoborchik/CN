@@ -26,7 +26,7 @@ namespace Coach_s_Log.Controllers
 
             return Ok(response);
         }
-
+        
         [HttpPost("[action]")]
         public async Task<ActionResult<string>> LoginCoach([FromBody] CoachLoginRequest coachRequest)
         {

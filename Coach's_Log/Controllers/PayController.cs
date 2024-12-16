@@ -27,11 +27,19 @@ namespace Coach_s_Log.Controllers
 
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<PayResponse>> CreatePay([FromBody] PayRequest pay)
+        public async Task<ActionResult<PayInformationResponse>> CreatePay([FromBody] PayRequest pay)
         {
-            var ans = await _payService.CreatePay(pay.Date, pay.Summary, pay.Image, pay.Sportsmen);
+            await _payService.CreatePay(pay.Date, pay.Summary, pay.Image, pay.Sportsmen);
 
-            return Ok(ans);
+            return await GetPaysSportsmen(new PaymentSportsmenRequest(pay.Sportsmen,pay.Date.Month));
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<PayInformationCoachResponse>> GetPaysForCoach(PayInformationCoachRequest request)
+        {
+            var list = await _payService.GetPaySportsmenForCoach(request.GroupId, request.Month);
+
+            return new PayInformationCoachResponse(list);
         }
     }
 }
